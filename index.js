@@ -11,19 +11,16 @@ app.listen(process.eve.PORT || 5000, () =>{
     console.log("app server has start on port 5000");
 });
 
-function verficar(){
-    const cidadeAtendida = ['Andradina','Araçatuba','Birigui', 'Guararapes', 'Jales', 'Mirandópolis','Penápolis','Promissão','Três Lagoas'];
-    const atendida = cidadeAtendida.includes(responseApi.data.city);
-    if(atendida)
-        response.send({ cidade: responseApi.data.city, mensagem: 'Cidade Atendida'})
-    else response.send({ cidade: responseApi.data.city})
-}
 
 app.get('/cep/:cep', (request, response) => {
     const { cep } = request.params;
     api.get(`https://brasilapi.com.br/api/cep/v1/{${cep}}`)
     .then((responseApi) => {
-        verficar(responseApi)     
+        const cidadeAtendida = ['Andradina','Araçatuba','Birigui', 'Guararapes', 'Jales', 'Mirandópolis','Penápolis','Promissão','Três Lagoas'];
+        const verificar = cidadeAtendida.includes(responseApi.data.city);
+        if(verificar)
+            response.send({ cidade: responseApi.data.city, mensagem: 'Cidade Atendida'})
+        else response.send({ cidade: responseApi.data.city})
     }).catch((error) => response.send({ erro: error.message }))
 })
 
